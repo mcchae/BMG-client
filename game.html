@@ -1,0 +1,155 @@
+﻿<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title></title>
+		
+	    <meta property="og:image" content="resource/images/axisj_sns.png" /> 
+	    <meta property="og:site_name" content="BMG" /> 
+	    <meta property="og:description" id="meta_description" content="비즈니즈 모델의 기획, 분석, 검증 그리고 평가를 통해 비즈니스 모델을 실행하는 내부요인과 해당 비즈니스 모델에 영향을 끼치는 외부요인을 게임을 하듯이 스테이지 별로 클리어 해 나가는 '비즈니스 모델 게임(BMG)'입니다." />
+	    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, minimum-scale=1.0, maximum-scale=1.0" />
+	
+		<!-- css block -->
+		<link rel="stylesheet" type="text/css" href="_AXJ/ui/default/AXJ.css" />
+		<link rel="stylesheet" type="text/css" href="_AXJ/ui/default/AXTabs.css" />
+		<link rel="stylesheet" type="text/css" href="_AXJ/ui/default/AXInput.css" />
+		<link rel="stylesheet" type="text/css" href="_AXJ/ui/default/AXSelect.css" />
+		<link rel="stylesheet" type="text/css" href="_AXJ/ui/default/AXButton.css" />
+		<link rel="stylesheet" type="text/css" href="_AXJ/ui/default/AXProgress.css" />
+		
+		<link rel="stylesheet" type="text/css" href="resource/style.css" />
+		
+		<!-- js block -->
+		<script type="text/javascript" src="_AXJ/jquery/jquery.min.js"></script>
+		<script type="text/javascript" src="_AXJ/lib/AXJ.js"></script>
+		<script type="text/javascript" src="_AXJ/lib/AXInput.js"></script>
+		<script type="text/javascript" src="_AXJ/lib/AXSelect.js"></script>
+		<script type="text/javascript" src="_AXJ/lib/AXTab.js"></script>
+		<script type="text/javascript" src="_AXJ/lib/AXProgress.js"></script>
+		<script type="text/javascript" src="_AXJ/lib/AXModal.js"></script>
+		
+		<script type="text/javascript">
+		var user_id = AXUtil.getCookie("user_id");
+		var user_name = AXUtil.getCookie("user_name");
+		var user_token = AXUtil.getCookie("user_token");
+		</script>
+		<script type="text/javascript" src="common.js?v=1"></script>
+		<script type="text/javascript" src="game.js?v=1"></script>
+	</head>
+	<body>
+		<div class="template_game">
+			
+			<!-- 헤더 -->
+			<div class="game_head">
+				<a href="game.html" class="logo">BMG</a>
+				<span class="game_title" id="game_title">...</span>
+				<div class="headTools">
+					<a href="http://api.bmg.name:9000/resources/bmg.pdf" target="_blank" class="download" id="download">BMG Case Example Kit</a>
+					|
+					<div class="user_icon" id="user_icon"></div>
+					<a href="javascript:;" class="user_name" id="user_name">...</a>
+					|
+					<a href="javascript:;" class="More" id="popMenuHandle">More</a>
+				</div>
+			</div>
+			
+			<!-- 팀/게임 정보 팝업 -->
+			<div class="AXPopOver" id="popmenu" style="display:none;">
+				<div class="arrowTop"></div>
+				<div class="blockContainer">
+					<div class="contextMenuBody popmenu">
+						<div class="popmenuTitle">
+							팀
+							<button type="button" class="popmenuButton AXButtonSmall" onclick="fnObj.frmOpenTeam();">Add</button>
+						</div>
+						<div class="popmenuBody" id="myteams">
+							
+						</div>
+						<div class="popmenuTitle">
+							게임
+							<button type="button" class="popmenuButton AXButtonSmall" onclick="fnObj.frmOpenGame();">Add</button>	
+						</div>
+						<div class="popmenuBody" id="mygames">
+							
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- 로그인 정보 팝업 -->
+			<div class="AXPopOver" id="popusermenu" style="display:none;">
+				<div class="arrowTop"></div>
+				<div class="blockContainer">
+					<div class="contextMenuBody popusermenu">
+						<div id="userEmail">
+							
+						</div>
+						<div class="AXHspace5"></div>
+						<button type="button" class="AXButtonSmall Classic" onclick="fnObj.logout();">로그아웃</button>
+					</div>
+				</div>
+			</div>
+			
+			<!-- 게임 스테이지 정보 편집 -->
+			<div class="game_stages" id="game_stages"></div>
+			
+			<!-- quick editor -->
+			<div class="quickContainer">
+				<div class="quickTitle" id="quickTitle">QUICK EDITOR</div>
+				<div class="quickBody" id="quickBody"></div>
+				<div class="quickFoot" id="quickFoot"></div>
+			</div>
+			
+			<!-- 네비게이션 표시 -->
+			<div class="navigation stage1" id="stageNavigation"></div>
+				
+			<!-- 팀정보 / 게임정보 팝업 -->
+			<div style="display:none;">
+
+				<div id="teamFrm">
+					<div class="signInTitle">팀이름을 입력해주세요</div>
+					<div class="signInBody">
+						<div style="padding-bottom:10px;" class="isFirstFrm">만들어진 팀이 없습니다. 게임을 시작하기 위해서는 팀 이름을 입력 하셔야 합니다.</div>
+						<form name="teamform" method="post" onsubmit="return false;">
+							<input type="hidden" name="fb_access_token" value="" />
+							<input type="hidden" name="team_id" value="" />
+							<label class="AXInputLabel">
+								<input type="text" name="team_name" placeholder="팀이름" class="AXInput W200" />
+							</label>
+							<div class="AXHspace10"></div>
+							<button class="AXButton Green" onclick="fnObj.makeTeam();">OK</button>
+							<button type="button" class="AXButton Red isSecondFrm" onclick="fnObj.cancelTeam();">CANCEL</button>
+						</form>
+					</div>
+				</div>
+			
+				
+				<div id="gameFrm">
+					<div class="signInTitle">게임만들기</div>
+					<div class="signInBody">
+						<div style="padding-bottom:10px;font-weight:bold;" class="isFirstFrm">만들어진 게임이 없습니다.</div>
+						
+						<div class="AXHspace10"></div>
+						<form name="gameform" method="post" onsubmit="return false;">
+							<input type="hidden" name="fb_access_token" value="" />
+							<input type="hidden" name="game_id" value="" />
+							<label class="AXInputLabel fullWidth">
+								<input type="text" name="game_name" placeholder="게임이름" class="AXInput W200" />
+							</label>
+							<div class="AXHspace10"></div>
+							<label class="AXInputLabel fullWidth">
+								<span>사업아이템의 성격을 고려하여<br/>게임타입을 선택해 주세요</span>
+								<select name="game_type" class="AXSelect W200">
+									<option value="PLATFORM">플랫폼(양면시장) 유형</option>
+									<option value="PRODUCT">일반 제품-서비스 유형</option>
+								</select>
+							</label>
+							<div class="AXHspace10"></div>
+							<button class="AXButton Green" onclick="fnObj.makeGame();">OK</button>
+							<button type="button" class="AXButton Red isSecondFrm" onclick="fnObj.cancelGame();">CANCEL</button>
+						</form>
+					</div>
+				</div>
+			
+		</div>
+	</body>
+</html>

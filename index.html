@@ -1,0 +1,340 @@
+﻿<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title></title>
+		
+	    <meta property="og:image" content="resource/images/axisj_sns.png" /> 
+	    <meta property="og:site_name" content="BMG" /> 
+	    <meta property="og:description" id="meta_description" content="비즈니즈 모델의 기획, 분석, 검증 그리고 평가를 통해 비즈니스 모델을 실행하는 내부요인과 해당 비즈니스 모델에 영향을 끼치는 외부요인을 게임을 하듯이 스테이지 별로 클리어 해 나가는 '비즈니스 모델 게임(BMG)'입니다." />
+	    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, minimum-scale=1.0, maximum-scale=1.0" />
+	
+		<!-- css block -->
+		<link rel="stylesheet" type="text/css" href="_AXJ/ui/default/AXJ.css" />
+		<link rel="stylesheet" type="text/css" href="_AXJ/ui/default/AXTabs.css" />
+		<link rel="stylesheet" type="text/css" href="_AXJ/ui/default/AXInput.css" />
+		<link rel="stylesheet" type="text/css" href="_AXJ/ui/default/AXSelect.css" />
+		<link rel="stylesheet" type="text/css" href="_AXJ/ui/default/AXButton.css" />
+		<link rel="stylesheet" type="text/css" href="_AXJ/ui/default/AXProgress.css" />
+		
+		<link rel="stylesheet" type="text/css" href="resource/style.css" />
+		
+		<!-- js block -->
+		<script type="text/javascript" src="_AXJ/jquery/jquery.min.js"></script>
+		<script type="text/javascript" src="_AXJ/lib/AXJ.js"></script>
+		<script type="text/javascript" src="_AXJ/lib/AXInput.js"></script>
+		<script type="text/javascript" src="_AXJ/lib/AXSelect.js"></script>
+		<script type="text/javascript" src="_AXJ/lib/AXTab.js"></script>
+		<script type="text/javascript" src="_AXJ/lib/AXProgress.js"></script>
+		<script type="text/javascript" src="_AXJ/lib/AXModal.js"></script>
+		
+		<script type="text/javascript">
+		
+		</script>
+	</head>
+	<body>
+		<div class="template_index">
+			<div class="index_bg_00">
+				<div class="abs center fullWidth">
+					<div class="logo"></div>
+					<h1>세상에 빛을 보지 못한 훌륭한 비즈니스 아이디어가 너무 많습니다.</h1>
+					<h2>“비즈니스 모델 게임(BMG)”으로 당신의 비즈니스를 점검해 보세요.</h2>
+					<div class="buttonBox">
+						<button type="button" class="AXButtonLarge Blue" onclick="facebook.checkStatus();"><span class="fbButton">FaceBook Login</span></button>	
+					</div>
+				</div>
+			</div>
+			<div class="context_center">
+				<h1>What is BMG?</h1>
+				<p>			
+					비즈니즈 모델의 기획, 분석, 검증 그리고 평가를 통해
+					비즈니스 모델을 실행하는 내부요인과 해당 비즈니스 모델에 영향을 끼치는 외부요인을 게임을 하듯이
+					스테이지 별로 클리어 해 나가는 <u>“비즈니스 모델 게임(BMG)”</u>입니다.
+				</p>
+			</div>
+			<div class="index_bg_01"></div>
+		</div>
+		<div style="display:none;">
+			<div id="modalContent">
+				<div class="signInTitle">회원가입 / 로그인</div>
+				<div class="signInBody">
+					<form name="signupform" method="post" onsubmit="return false;">
+						<input type="hidden" name="snsid" value="" />
+						<label class="AXInputLabel">
+							<input type="text" name="email" placeholder="이메일주소" class="AXInput W200" />
+						</label>
+						<div class="AXHspace10"></div>
+						<label class="AXInputLabel">
+							<input type="password" name="password" placeholder="비밀번호(6자리이상)" class="AXInput W200" />
+						</label>
+						<div class="AXHspace10"></div>
+						<label class="AXInputLabel">
+							<input type="text" name="user_name" placeholder="이름" class="AXInput W200" />
+						</label>
+						<div class="AXHspace10"></div>
+						<button type="submit" class="AXButton Green" onclick="bmg.signup();">SignUp</button>
+						<button type="button" class="AXButton Red" onclick="myModal.close('modalDiv01');">Cancel</button>
+					</form>
+				</div>
+			</div>
+		</div>
+		<div id="fb-root"></div>
+	</body>
+</html>
+
+<script type="text/javascript">
+var myModal = new AXModal();
+
+// for Facebook -------------
+window.fbAsyncInit = function() {
+	// init the FB JS SDK
+	FB.init({
+		appId      : '241601482680103',                        // App ID from the app dashboard
+		status     : true,                                 // Check Facebook Login status
+		xfbml      : true,                                  // Look for social plugins on the page
+		cookie: true, 
+		oauth: true		
+	});
+};
+
+// Load the SDK asynchronously
+(function(d, s, id){
+ var js, fjs = d.getElementsByTagName(s)[0];
+ if (d.getElementById(id)) {return;}
+ js = d.createElement(s); js.id = id;
+ js.src = "//connect.facebook.net/ko_KR/all.js";
+ fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));
+
+var facebook = {
+	access_token:"",
+	userID:"", 
+	expiresIn:0, 
+	checkStatus: function(){
+		mask.open();
+		
+		if(document.domain != "bmg.axisj.com" && document.domain != "www.bmg.name" && document.domain != "bmg.name"){
+			myModal.openDiv({
+				modalID:"modalDiv01",
+				targetID:"modalContent",
+				width:300,
+				top:100
+			});
+			return;
+		}
+		
+		FB.getLoginStatus(function(response) {
+  			if (response.status === 'connected') {
+    			// the user is logged in and has authenticated 	
+    			facebook.access_token = response.authResponse.accessToken;
+    			facebook.userID = response.authResponse.userID;
+    			facebook.expiresIn = response.authResponse.expiresIn;
+    			facebook.getUserInfo(response);
+    		}else{
+    			facebook.login();
+    		}
+    		mask.close();
+    	});
+	},
+	login: function(){
+		FB.login(
+			function(response) {
+				if(response.authResponse){
+	    			facebook.access_token = response.authResponse.accessToken;
+	    			facebook.userID = response.authResponse.userID;
+	    			facebook.expiresIn = response.authResponse.expiresIn;
+	    			facebook.getUserInfo(response);
+	    		}else{
+	    			trace("facebook cancle");	
+	    		}
+			}, 
+			{'scope':'email,user_likes,read_stream,publish_actions,publish_stream,offline_access,user_photos'}
+		);
+	},
+	getUserInfo: function(response){
+
+		var url = "https://graph.facebook.com/me/";
+		var pars = "access_token="+facebook.access_token;
+		new AXReq(url, {
+			type:"GET",
+			debug:false, 
+			pars:pars, 
+			onsucc:function(res){
+				//trace(res);
+				//{"id":"100001719134956", "name":"Kiyoung Jang", "first_name":"Kiyoung", "last_name":"Jang", "link":"https://www.facebook.com/kiyoung77", "username":"kiyoung77", "hometown":{"id":"111175118906315", "name":"Berlin, Germany"}, "location":{"id":"187882931258133", "name":"Uijeongbu"}, 
+				//"bio":"기억력 : 상\u0010체력 : 하\u0010딸린식구 : 다수\u0010필살기 : 날새기", "quotes":"마케팅은 육감적으로 \u0010개발은 논리적으로\u0010사랑은 무조건적으로", "work":[{"employer":{"id":"180514045305102", "name":"새터"}, 
+				//"position":{"id":"144267998925157", "name":"팀장"}, "start_date":"0000-00"}, {"employer":{"id":"213512108737850", "name":"axmods"}, "start_date":"0000-00"}, {"employer":{"id":"117200448325593", "name":"Collabra"}}, 
+				//{"employer":{"id":"351822748246601", "name":"AXISJ.com"}, "position":{"id":"144267998925157", "name":"팀장"}, "start_date":"0000-00", "end_date":"0000-00"}, {"employer":{"id":"132275466786785", "name":"이스톰"}}, {"employer":{"id":"144850625583703", "name":"나무소프트"}}], 
+				//"education":[{"school":{"id":"111108085579874", "name":"고려고등학교"}, "type":"High School"}, {"school":{"id":"105942552779657", "name":"인덕대학교"}, "type":"College"}], 
+				//"gender":"male", "email":"tom@axisj.com", "timezone":9, "locale":"ko_KR", "languages":[{"id":"114493668568100", "name":"한국어"}], "verified":true, "updated_time":"2013-08-23T12:11:20+0000"} 
+				var location = "";
+				if(res.location) location = res.location.name;
+				var sendObj = {
+					snstype:"facebook",
+					access_token:facebook.access_token,
+					snsid:res.id,
+					username:res.name,
+					email:res.email,
+					snslink:res.link,
+					gender:res.gender,
+					Location:location,
+					Profile_image_url:"http://graph.facebook.com/"+res.id+"/picture"
+				};
+				bmg.snsSignIn(sendObj);
+
+				mask.close();
+			},
+			onerr:null
+		});
+	}
+}
+// for Facebook -------------
+
+var apiServer = "api.bmg.name:9000";
+var apiheaders = {
+	"X-Service-Type":"AXBrain/BMG",
+	"X-BMG-AccessToken":"AXBrain",
+	"X-User-Token":""
+};
+var bmg = {
+	snsSignIn: function(obj){
+		//trace(obj);
+		var frm = document.signupform;
+		frm.snsid.value = obj.snsid.trim();
+		frm.user_name.value = obj.username.trim();
+		frm.email.value = obj.email.trim();
+
+		//trace("fb_access_token="+obj.access_token);
+
+		mask.open();
+		// 사용자 가입여부 확인
+		new AXReq("http://" + apiServer + "/users", 
+		{
+			headers: apiheaders,
+			type: "GET",
+			pars: "sns_id="+obj.snsid.trim(), 
+			contentType: "application/json", async:false,
+			onsucc: function (res) {
+				trace(res);
+				if(res.error){
+					//toast.push({type:"Caution", body:res.error.error_name});
+					
+					myModal.openDiv({
+						modalID:"modalDiv01",
+						targetID:"modalContent",
+						width:300,
+						top:100
+					});
+					return;
+				}else{
+					
+					AXUtil.setCookie("user_id", res.user_id);
+					AXUtil.setCookie("user_name", res.user_name);
+					AXUtil.setCookie("user_token", res.user_token);
+					location.href = "game.html";					
+				}
+				
+				mask.close();
+			},
+			onerr: function(e){
+				
+				mask.close();
+			}
+		});	
+
+
+	},
+	signup: function(){
+		var frm = document.signupform;
+		if(frm.password.value.length < 6){
+			alert("비밀번호를 6자리 이상 입력해주세요.");
+			frm.password.focus();
+			return;
+		}
+		
+		mask.open();
+		
+		var pars = {
+		    name:frm.user_name.value.trim(),
+		    email: frm.email.value.trim(),
+		    password: frm.password.value.trim(),
+		    sns_id: frm.snsid.value.trim()
+		}
+		
+		//trace(frm.snsid.value.trim());
+		
+		// 사용자 가입여부 확인
+		new AXReq("http://" + apiServer + "/users", 
+		{
+			headers: apiheaders,
+			type: "POST",
+			pars: Object.toJSON(pars), 
+			contentType: "application/json", async:false,
+			onsucc: function (res) {
+				if(res.error){
+					//if(res.error.error_name == "이미 등록된 이메일 입니다." ){
+						bmg.signin();
+					/*
+					}else{
+						toast.push(res.error.error_name);
+					}
+					*/
+					// 로그인 
+
+					mask.close();
+					return;
+				}else{
+					
+					myModal.close('modalDiv01');
+					
+					dialog.push("회원가입 신청 되었습니다. 입력하신 이메일로 이메일 인증링크가 보내집니다. 인증링크 클리 후에 로그인 해주세요");
+					
+					/*
+					AXUtil.setCookie("user_id", res.user_id);
+					AXUtil.setCookie("user_name", res.user_name);
+					AXUtil.setCookie("user_token", res.user_token);
+					location.href = "game.html";	
+					*/
+				}
+				
+				
+			},
+			onerr: function(e){
+				trace(e);
+				mask.close();
+			}
+		});	
+		
+		//location.href = "game.html";
+	},
+	signin: function(){
+		var frm = document.signupform;
+		// 로그인
+		mask.open();
+		new AXReq("http://" + apiServer + "/users", 
+		{
+			headers: apiheaders,
+			type: "GET",
+			pars: "email="+ frm.email.value.trim() +"&password=" + frm.password.value.trim() + "&session_timeout=" + (1000*60*10), 
+			contentType: "application/json", async:false,
+			onsucc: function (res) {
+				if(res.error){
+					toast.push(res.error.error_name);
+					mask.close();
+					return;
+				}else{
+					myModal.close('modalDiv01');
+					AXUtil.setCookie("user_id", res.user_id);
+					AXUtil.setCookie("user_name", res.user_name);
+					AXUtil.setCookie("user_token", res.user_token);
+					location.href = "game.html";
+				}
+			},
+			onerr: function(e){
+				trace(e);
+				mask.close();
+			}
+		});	
+	}
+}
+</script>
