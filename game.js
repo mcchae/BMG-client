@@ -9,6 +9,11 @@ var stagePosition = [];
 var myProgress = new AXProgress();
 var myModal = new AXModal();
 
+var getSHA512 = function(text){
+	var hashObj = new jsSHA(text, "TEXT");
+	return hashObj.getHash("SHA-512", "HEX");
+};
+
 var fnObj = {
 	pageStart: function(){
 		
@@ -59,8 +64,17 @@ var fnObj = {
 		nextFn();
 	},
 	getUser: function(onLoad){
+		/*
+		if(axf.getCookie("BMGUSER") != ""){
+			
+			if(onLoad) onLoad();
+			return;	
+		}
+		*/
+		
 		apiCall("users/"+user_id, {param:"{}", method:"GET"}, function(result, Obj){
 			if(result == "success"){
+				
 				user = AXUtil.copyObject(Obj);
 				
 				$("#user_icon").css({
@@ -69,8 +83,11 @@ var fnObj = {
 				});
 				$("#user_name").html(user.user_name);
 				$("#userEmail").html(user.email);
-
+				
+				//axf.setCookie("BMGUSER", "{\"user_name\":\"" + user.user_name + "\", \"email\":\"" + user.email + "\"");
+				
 				if(onLoad) onLoad();
+				
 			}else{
 				location.href = "index.html";
 				return;
@@ -82,12 +99,13 @@ var fnObj = {
 		$("#mygames").empty();
 		
 		if( team_id === undefined ){
-			team_id = selectedTeamId;
+			team_id = AXUtil.getCookie("selectedTeamId");
 		}
 		
 		apiCall("teams", {param:"user_id="+user_id, method:"GET"}, function(result, Obj){
 			if(result == "success"){
 				//trace(Obj);
+
 				if(Obj.teams.length == 0){
 					teams.list = [];
 					teams.selectedIndex = null;
@@ -105,10 +123,14 @@ var fnObj = {
 								return false;
 							}
 						});
+						if(teams.selectedIndex == undefined) teams.selectedIndex = 0;
 					}
 					/* trace("11"); */
+					
 					teams.team_id = teams.list[teams.selectedIndex].team_id;
+					
 					AXUtil.setCookie("selectedTeamId", teams.team_id);
+					
 					/* trace(teams.team_id); */
 					
 					if(onLoad) onLoad();
@@ -133,10 +155,14 @@ var fnObj = {
 		if(team_id != undefined){
 			frm.team_id.value = team_id;
 			frm.team_name.value = teams.list[tidx].team_name;
+			frm.team_member_count.value = teams.list[tidx].team_member_count;
+			frm.position.value = teams.list[tidx].position;
 			$("#teamFrm").find(".signInTitle").html("수정할 팀 이름을 입력해주세요.");
 		}else{
 			frm.team_id.value = "";
 			frm.team_name.value = "";
+			frm.team_member_count.value = "";
+			frm.position.value = "";
 			$("#teamFrm").find(".signInTitle").html("팀이름을 입력해주세요");
 		}
 		
@@ -157,11 +183,23 @@ var fnObj = {
 			frm.team_name.focus();
 			return;	
 		}
+		if(frm.team_member_count.value == ""){
+			alert("팀 멤버의 수를 선택하세요");
+			frm.team_member_count.focus();
+			return;	
+		}
+		if(frm.position.value == ""){
+			alert("제품/서비스의 포지셔닝 영역 선택하세요");
+			frm.position.focus();
+			return;	
+		}
 		
 		if(frm.team_id.value == ""){ // 등록
 			var pars = {
 				team_name:frm.team_name.value,
-				user_id:user_id
+				user_id:user_id,
+				team_member_count: frm.team_member_count.value,
+				position: frm.position.value
 			};
 			apiCall("teams", {param:Object.toJSON(pars), method:"POST"}, function(result, Obj){
 				if(Obj.error){
@@ -178,7 +216,9 @@ var fnObj = {
 		}else{ // 수정
 			var pars = {
 				team_name: frm.team_name.value,
-				team_id: frm.team_id.value
+				team_id: frm.team_id.value,
+				team_member_count: frm.team_member_count.value,
+				position: frm.position.value
 			};
 			apiCall("teams", {param:Object.toJSON(pars), method:"PUT"}, function(result, Obj){
 				if(Obj.error){
@@ -225,6 +265,7 @@ var fnObj = {
 					return false;
 				}
 			});
+			if(teams.selectedIndex == undefined) teams.selectedIndex = 0;
 		}
 		teams.team_id = teams.list[teams.selectedIndex].team_id;
 		AXUtil.setCookie("selectedTeamId", teams.team_id);
@@ -274,6 +315,7 @@ var fnObj = {
 								return false;
 							}
 						});
+						if(games.selectedIndex == undefined) games.selectedIndex = 0;
 					}
 					games.game_id = games.list[games.selectedIndex].game_id;
 					AXUtil.setCookie("selectedGameId", games.game_id);
@@ -399,6 +441,7 @@ var fnObj = {
 					return false;
 				}
 			});
+			if(games.selectedIndex == undefined) games.selectedIndex = 0;
 		}
 		items = {};
 		games.game_id = games.list[games.selectedIndex].game_id;
@@ -577,6 +620,34 @@ var fnObj = {
 		AXUtil.setCookie("user_name", "");
 		AXUtil.setCookie("user_token", "");
 		location.href = "/";
+	},
+	frmOpenChangePassword: function(){
+		myModal.openDiv({
+			modalID:"modal_password",
+			targetID:"passFrm",
+			width:310,
+			top:100
+		});
+	},
+	changePassword: function(){
+		var frm = document.passform;
+		var pars = {
+			email: user.email,
+			password: getSHA512(frm.oldPassword.value),
+			new_password: getSHA512(frm.newPassword.value)
+		};
+		apiCall("changepassword", {param:Object.toJSON(pars), method:"PUT"}, function(result, Obj){
+			if(Obj.error){
+				toast.push({type:"Caution", body:Obj.error.error_name});
+				return;
+			}
+			if(result == "success"){
+				toast.push("비밀번호가 수정 되었습니다.");
+				myModal.close("modal_password");
+			}else{
+				
+			}
+		});
 	},
 	openHelp: function(){
 		dialog.push("도움말 컨텐츠가 준비되지 않았습니다.");

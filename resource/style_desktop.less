@@ -1,12 +1,10 @@
-﻿/* style_desktop */
-
-@charset "utf-8";
-
-@import "csslib";
-@import "common.less";
+﻿@import "csslib";
 
 @itemWidth: 254px;
 
+#userEmail{
+	.Ellip;	
+}
 
 .template_index{
 	H1{
@@ -549,8 +547,7 @@
 
 /* game_result */
 #game_result_stage{
-	position:absolute;
-	top:38px;left:0px;
+	padding-top:38px;
 }
 .game_result_line{width:1200px;}
 .game_result{
@@ -653,8 +650,7 @@
 			background:url(images/game/textareaBg.png) #fff 0px 10px;
 			line-height:26px;
 			min-height:100px;
-			text-align:left;
-			font-weight:bold;
+			text-align:left;font-size:13px;
 		}
 		
 		.item_quick{

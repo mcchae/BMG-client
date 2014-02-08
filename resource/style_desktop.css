@@ -1,184 +1,8 @@
-@import url(http://fonts.googleapis.com/earlyaccess/nanumgothic.css);
-/* style_desktop */
-@charset "utf-8";
 /* mobile device width */
-/* style_desktop */
-body,
-select,
-input,
-a,
-button,
-TEXTAREA {
-  font-family: 'Apple SD Gothic Neo', 'Nanum Gothic';
-  font-size: 12px;
-  line-height: 1.6em;
-  -webkit-text-size-adjust: none;
-}
-html,
-body {
-  margin: 0px;
-  padding: 0px;
-  height: 100%;
-}
-.index_bg_00 {
-  position: relative;
-  background: url(images/index_bg_00.png) center 100%;
-  background-size: cover;
-  height: 587px;
-}
-.index_bg_01 {
-  background: url(images/index_bg_01.png) center 0px no-repeat;
-  background-size: contain;
-  min-height: 495px;
-}
-.abs {
-  position: absolute;
-}
-.center {
-  text-align: center;
-}
-.fullWidth {
-  width: 100%;
-}
-/* AXModal *************************************************************************** */
-.AXModalBox {
-  position: absolute;
-  left: 10px;
-  top: 10px;
-  z-index: 5001;
-}
-.AXModalBox .windowbox {
-  border: 0px none;
-  background: #fff;
-  box-shadow: 0px 0px 3px #000;
-  border-radius: 4px;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  padding: 0px;
-  margin: 0px 0px 10px 0px;
-  font-size: 12px;
-  color: #525252;
+#userEmail {
+  white-space: nowrap;
   overflow: hidden;
-}
-.AXModalBox .windowbox .windowboxFrame {
-  -moz-opacity: 0;
-  opacity: 0;
-  filter: alpha(opacity=0);
-}
-.AXModalBox .windowbox .windowboxFrame.loaded {
-  -moz-opacity: 1;
-  opacity: 1;
-  filter: alpha(opacity=100);
-}
-.AXModalBox .windowbox .closeBtn {
-  display: none;
-}
-/**************************************************************************** AXModal */
-.fbButton {
-  padding-left: 25px;
-  background: url(images/icons/facebook.png) no-repeat 0px;
-}
-/* popmenu */
-.AXPopOver {
-  position: fixed;
-  left: auto;
-  right: 10px;
-  top: 43px;
-  width: 200px;
-  background: #fff;
-  padding: 3px;
-}
-.AXPopOver .arrowTop {
-  background: url(images/game/AXPopOverArrow.png) no-repeat 180px 0px;
-}
-.AXPopOver .blockContainer .contextMenuBody {
-  background: #fff;
-  padding: 5px;
-}
-/* .popmenu */
-.popmenu {
-  padding: 10px;
-}
-.popmenu .popmenuTitle {
-  position: relative;
-  height: 30px;
-  line-height: 30px;
-  padding: 0px 5px;
-  background: #c4c4c4;
-  color: #fff;
-  font-weight: bold;
-}
-.popmenu .popmenuTitle .popmenuButton {
-  position: absolute;
-  right: 5px;
-  top: 5px;
-}
-.popmenu .popmenuBody {
-  min-height: 20px;
-}
-.popmenu .popmenuItemBlock {
-  border-bottom: 1px solid #ccc;
-}
-.popmenu .popmenuItemBlock .buttons {
-  padding: 0px 5px 5px 5px;
-  text-align: right;
-}
-.popmenu .popmenuItem {
-  display: block;
-  line-height: 18px;
-  padding: 5px 5px;
-  text-decoration: none;
-  color: #5e6c79;
-}
-@media all and (max-width: 648px) {
-  .popmenu .popmenuTitle {
-    position: relative;
-    height: 35px;
-    line-height: 35px;
-    padding: 0px 5px;
-    background: #c4c4c4;
-    color: #fff;
-    font-weight: bold;
-  }
-}
-.popmenu .popmenuItem.selected {
-  background: url(images/game/itemCheck.png) no-repeat 100% center;
-  font-weight: bold;
-}
-/* popusermenu */
-#popusermenu {
-  position: fixed;
-  left: auto;
-  right: 40px;
-  top: 43px;
-  width: 150px;
-}
-#popusermenu .arrowTop {
-  background: url(images/game/AXPopOverArrow.png) no-repeat 100px 0px;
-}
-.popusermenu {
-  padding: 10px;
-}
-.popusermenu .popmenuItem {
-  display: block;
-  line-height: 18px;
-  padding: 5px 5px;
-  border-bottom: 1px solid #ccc;
-  text-decoration: none;
-  color: #5e6c79;
-}
-.popusermenu #userEmail {
-  color: #5e6c79;
-  font-weight: bold;
-  padding: 5px;
-  border-bottom: 1px solid #ccc;
-}
-.AXLayoutTable {
-  border-collapse: collapse;
-  border: 0px none;
-  width: 100%;
-  table-layout: fixed;
-  font-size: 12px;
+  text-overflow: ellipsis;
 }
 .template_index H1 {
   font-size: 30px;
@@ -1097,9 +921,7 @@ body {
 }
 /* game_result */
 #game_result_stage {
-  position: absolute;
-  top: 38px;
-  left: 0px;
+  padding-top: 38px;
 }
 .game_result_line {
   width: 1200px;
@@ -1272,7 +1094,7 @@ body {
   line-height: 26px;
   min-height: 100px;
   text-align: left;
-  font-weight: bold;
+  font-size: 13px;
 }
 .game_result .item .item_quick {
   position: absolute;

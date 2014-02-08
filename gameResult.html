@@ -21,7 +21,7 @@
 		
 		<!-- js block -->
 		<script type="text/javascript" src="_AXJ/jquery/jquery.min.js"></script>
-		<script type="text/javascript" src="_AXJ/lib/AXJ.js"></script>
+		<script type="text/javascript" src="_AXJ/lib/AXJ.js?v=001"></script>
 		<script type="text/javascript" src="_AXJ/lib/AXInput.js"></script>
 		<script type="text/javascript" src="_AXJ/lib/AXSelect.js"></script>
 		<script type="text/javascript" src="_AXJ/lib/AXTab.js"></script>
@@ -33,10 +33,10 @@
 		var user_name = AXUtil.getCookie("user_name");
 		var user_token = AXUtil.getCookie("user_token");
 		</script>
-		<script type="text/javascript" src="common.js?v=1"></script>
-		<script type="text/javascript" src="gameResult.js?v=1"></script>
+		<script type="text/javascript" src="common.js?v=001"></script>
+		<script type="text/javascript" src="gameResult.js?v=001"></script>
 		<style type="text/css">
-			body{overflow:hidden;}
+			body{background:#E8EFF4;}
 		</style>
 	</head>
 	<body>
@@ -88,6 +88,7 @@
 						</div>
 						<div class="AXHspace5"></div>
 						<button type="button" class="AXButtonSmall Classic" onclick="fnObj.logout();">로그아웃</button>
+						<button type="button" class="AXButtonSmall Classic" onclick="fnObj.frmOpenChangePassword();">비밀번호변경</button>
 					</div>
 				</div>
 			</div>
@@ -261,11 +262,14 @@
 									</tr>
 								</tbody>
 							</table>
-							<div class="AXHspace20"></div>
-							<div style="text-align:center">
+							
+							<div style="text-align:center" class="buttonGroup">
+								<div class="AXHspace20"></div>
 								<button class="AXButtonLarge Classic" onclick="fnObj.goGame();">Go Game</button>
+								<button class="AXButtonLarge Classic" onclick="fnObj.print();">Print</button>
+								<div class="AXHspace20"></div>
 							</div>
-							<div class="AXHspace20"></div>
+							
 						</div>
 						<div class="game_result" id="game_result_PLATFORM" style="display:none;">
 							<table class="AXLayoutTable">
@@ -540,11 +544,14 @@
 									</tr>
 								</tbody>
 							</table>
-							<div class="AXHspace20"></div>
-							<div style="text-align:center">
+							
+							<div style="text-align:center" class="buttonGroup">
+								<div class="AXHspace20"></div>
 								<button class="AXButtonLarge Classic" onclick="fnObj.goGame();">Go Game</button>
+								<button class="AXButtonLarge Classic" onclick="fnObj.print();">Print</button>
+								<div class="AXHspace20"></div>
 							</div>
-							<div class="AXHspace20"></div>
+							
 						</div>
 	
 						<!-- 게임 SVG 타겟 -->
@@ -604,6 +611,27 @@
 							<div class="AXHspace10"></div>
 							<button class="AXButton Green" onclick="fnObj.makeGame();">OK</button>
 							<button type="button" class="AXButton Red isSecondFrm" onclick="fnObj.cancelGame();">CANCEL</button>
+						</form>
+					</div>
+				</div>
+				
+				<div id="passFrm">
+					<div class="signInTitle">비밀번호 바꾸기</div>
+					<div class="signInBody">
+						<div style="padding-bottom:10px;font-weight:bold;" class="isFirstFrm">현재 비밀번호와 변경하실 비밀번호를 입력하세요</div>
+						
+						<div class="AXHspace10"></div>
+						<form name="passform" method="post" onsubmit="return false;">
+							<label class="AXInputLabel fullWidth">
+								<input type="password" name="oldPassword" placeholder="현재 비밀번호" class="AXInput" />
+							</label>
+							<div class="AXHspace10"></div>
+							<label class="AXInputLabel fullWidth">
+								<input type="password" name="newPassword" placeholder="새로운 비밀번호" class="AXInput" />
+							</label>
+							<div class="AXHspace10"></div>
+							<button class="AXButton Green" onclick="fnObj.changePassword();">OK</button>
+							<button type="button" class="AXButton Red isSecondFrm" onclick="myModal.close('modal_password')">CANCEL</button>
 						</form>
 					</div>
 				</div>

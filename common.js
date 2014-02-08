@@ -3,7 +3,7 @@
 var apiheaders = {
 	"X-Service-Type":"AXBrain/BMG",
 	"X-BMG-AccessToken":"AXBrain",
-	"X-User-Token":user_token	
+	"X-User-Token":user_token
 };
 var apiCallStop = false;
 var apiCall = function(_url, options, callBack){
@@ -12,15 +12,21 @@ var apiCall = function(_url, options, callBack){
 		return;
 	}
 	if(apiCallStop) return;
+	
+	//trace(apiheaders);
+	
 	new AXReq("http://" + apiServer + "/" + _url, 
 	{
 		debug: false, 
 		pars: (options.param || "{}"), 
 		type: (options.method || "GET"),
 		contentType: "application/json",
-		async:true,
+		async: true,
 		headers: apiheaders,
 		onsucc: function (res) {
+			
+			//trace(res);
+			
 			if(res.session_eror){
 				//trace(res);
 				//alert(res.session_eror.error_name);

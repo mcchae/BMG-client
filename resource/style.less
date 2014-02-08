@@ -1,14 +1,5 @@
 ﻿@import "csslib";
 
-// css
-@charset "utf-8";
-/*!
- * AxisJ Javascript Library
- * http://axisj.com
- *
- * Copyright AXISJ
- * http://axisj.com/license
- */
-
-@import url('style_mobile.css') 	all and (max-width: @mobileWidth);
-@import url('style_desktop.css') 		(min-width: @mobileWidth);
+@import "common.less";
+@import "style_desktop"; //desktop;
+@import "style_mobile" @mobile;

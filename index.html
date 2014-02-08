@@ -20,6 +20,8 @@
 		<link rel="stylesheet" type="text/css" href="resource/style.css" />
 		
 		<!-- js block -->
+		<script type="text/javascript" src="resource/sha.js"></script>
+		
 		<script type="text/javascript" src="_AXJ/jquery/jquery.min.js"></script>
 		<script type="text/javascript" src="_AXJ/lib/AXJ.js"></script>
 		<script type="text/javascript" src="_AXJ/lib/AXInput.js"></script>
@@ -40,7 +42,9 @@
 					<h1>세상에 빛을 보지 못한 훌륭한 비즈니스 아이디어가 너무 많습니다.</h1>
 					<h2>“비즈니스 모델 게임(BMG)”으로 당신의 비즈니스를 점검해 보세요.</h2>
 					<div class="buttonBox">
-						<button type="button" class="AXButtonLarge Blue" onclick="facebook.checkStatus();"><span class="fbButton">FaceBook Login</span></button>	
+						<button type="button" class="AXButton Blue" onclick="facebook.checkStatus();"><span class="fbButton">FaceBook Login</span></button>
+						&nbsp;
+						<button type="button" class="AXButton Green" onclick="bmg.login();">E-mail Login</button>
 					</div>
 				</div>
 			</div>
@@ -72,8 +76,14 @@
 							<input type="text" name="user_name" placeholder="이름" class="AXInput W200" />
 						</label>
 						<div class="AXHspace10"></div>
-						<button type="submit" class="AXButton Green" onclick="bmg.signup();">SignUp</button>
-						<button type="button" class="AXButton Red" onclick="myModal.close('modalDiv01');">Cancel</button>
+						<button type="submit" class="AXButton Blue W60" onclick="bmg.signin();">SignIn</button>
+						&nbsp;
+						<button type="button" class="AXButton Green" onclick="bmg.signup();">SignUp</button>
+
+						<button type="button" class="AXButton Red" onclick="myModal.close('modalDiv01');">Close</button>
+						<div style="padding:10px;">
+							<a href="#axexec" onclick="bmg.findPassword();">비밀번호를 잊으셨나요?</a>
+						</div>
 					</form>
 				</div>
 			</div>
@@ -106,6 +116,11 @@ window.fbAsyncInit = function() {
  fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));
 
+var getSHA512 = function(text){
+	var hashObj = new jsSHA(text, "TEXT");
+	return hashObj.getHash("SHA-512", "HEX");
+};
+
 var facebook = {
 	access_token:"",
 	userID:"", 
@@ -114,12 +129,8 @@ var facebook = {
 		mask.open();
 		
 		if(document.domain != "bmg.axisj.com" && document.domain != "www.bmg.name" && document.domain != "bmg.name"){
-			myModal.openDiv({
-				modalID:"modalDiv01",
-				targetID:"modalContent",
-				width:300,
-				top:100
-			});
+			alert("페이스북 로그인을 사용 할 수 없는 도메인 입니다. E-mail Login 을 사용 하세요");
+			mask.close();
 			return;
 		}
 		
@@ -197,6 +208,15 @@ var apiheaders = {
 	"X-User-Token":""
 };
 var bmg = {
+	login: function(){
+		myModal.openDiv({
+			modalID:"modalDiv01",
+			targetID:"modalContent",
+			width:300,
+			top:100
+		});
+		return;
+	},
 	snsSignIn: function(obj){
 		//trace(obj);
 		var frm = document.signupform;
@@ -257,7 +277,7 @@ var bmg = {
 		var pars = {
 		    name:frm.user_name.value.trim(),
 		    email: frm.email.value.trim(),
-		    password: frm.password.value.trim(),
+		    password: getSHA512(frm.password.value.trim()),
 		    sns_id: frm.snsid.value.trim()
 		}
 		
@@ -272,13 +292,12 @@ var bmg = {
 			contentType: "application/json", async:false,
 			onsucc: function (res) {
 				if(res.error){
-					//if(res.error.error_name == "이미 등록된 이메일 입니다." ){
+					//trace(res.error);
+					if(res.error.error_name == "이미 등록된 이메일 입니다." ){
 						bmg.signin();
-					/*
 					}else{
 						toast.push(res.error.error_name);
 					}
-					*/
 					// 로그인 
 
 					mask.close();
@@ -310,12 +329,14 @@ var bmg = {
 	signin: function(){
 		var frm = document.signupform;
 		// 로그인
+		
 		mask.open();
 		new AXReq("http://" + apiServer + "/users", 
 		{
+			debug:false,
 			headers: apiheaders,
 			type: "GET",
-			pars: "email="+ frm.email.value.trim() +"&password=" + frm.password.value.trim() + "&session_timeout=" + (1000*60*10), 
+			pars: "email="+ frm.email.value.trim() +"&password=" + getSHA512(frm.password.value.trim()), 
 			contentType: "application/json", async:false,
 			onsucc: function (res) {
 				if(res.error){
@@ -333,6 +354,33 @@ var bmg = {
 			onerr: function(e){
 				trace(e);
 				mask.close();
+			}
+		});	
+	},
+	findPassword: function(){
+		var frm = document.signupform;
+
+		if(frm.email.value.length < 6){
+			alert("이메일 주소를 입력해주세요.");
+			frm.email.focus();
+			return;
+		}
+		
+		// 로그인
+		mask.open();
+		new AXReq("http://" + apiServer + "/findpassword",
+		{
+			headers: apiheaders,
+			type: "GET",
+			pars: "email="+ frm.email.value.trim(),
+			contentType: "application/json", async:false,
+			onsucc: function (res) {
+				alert("이메일로 새로운 비밀번호를 전송하였습니다. 감사합니다.");
+				myModal.close('modalDiv01');
+			},
+			onerr: function(e){
+				alert("이메일로 새로운 비밀번호를 전송하였습니다. 감사합니다.");
+				myModal.close('modalDiv01');
 			}
 		});	
 	}
