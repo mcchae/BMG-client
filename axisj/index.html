@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1.0, minimum-scale=1" />
+	<title>AXISJ</title>
+
+    <link rel="shortcut icon" href="ui/axisj.ico" type="image/x-icon" />
+    <link rel="icon" href="ui/axisj.ico" type="image/x-icon" />
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="ui/AXJ.png" />
+    <link rel="apple-touch-icon-precomposed" href="ui/AXJ.png" />
+
+
+    <link rel="stylesheet" type="text/css" href="ui/arongi/page.css">
+    <link rel="stylesheet" type="text/css" href="ui/arongi/AXJ.css">
+    <link rel="stylesheet" type="text/css" href="ui/arongi/AXButton.css">
+
+    <script type="text/javascript" src="jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="lib/AXJ.js"></script>
+    <script type="text/javascript" src="lib/AXTopDownMenu.js"></script>
+    <script type="text/javascript" src="samples/page.js"></script>
+
+    <style type="text/css">
+
+    </style>
+</head>
+<body>
+
+    <div id="AXPage">
+        <!-- AXPageBody -->
+        <article id="AXPageBody">
+            <div class="ax-wrap">
+                <div class="ax-layer-1" id="ax_layer_1"></div>
+            </div>
+        </article>
+        <!-- AXPageBody -->
+    </div>
+
+</body>
+</html>
+
+<script type="text/javascript" type="text/javascript">
+    isIndex = true;
+
+    jQuery(document).ready(function(){
+    	setTimeout(function(){
+            var po = [];
+            axf.each(sampleTree, function(){
+                po.push('<div class="ax-col-3">');
+                    po.push('<div class="ax-unit secBlock">');
+                        po.push('<h3>', this.label,'</h3>');
+                        po.push('<ul id="comon">');
+                            axf.each(this.cn, function() {
+                                po.push('<li><a href="', this.url,'">', this.label,'</a></li>');
+                            });
+                        po.push('</ul>');
+                    po.push('</div>');
+                po.push('</div>');
+            });
+            po.push('<div class="ax-clear"></div>');
+            $("#ax_layer_1").html(po.join(''));
+    	}, 500);
+    });
+</script>
+
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-38119279-1', 'axisj.com');
+    ga('send', 'pageview');
+</script>
